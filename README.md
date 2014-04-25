@@ -31,5 +31,7 @@ vagrant up
 Login
 
 ```
-# TODO
+ssh -i ./ssh/otto_id_rsa "otto@salt-host-factory-1.0"@client -c "id ; sudo ls /etc"
+
+ssh -i ./ssh/donna_id_rsa "donna@salt-host-factory-1.0"@client -c "id ; ls /etc"
 ```
