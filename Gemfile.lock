@@ -1,0 +1,88 @@
+GIT
+  remote: git://github.com/conjurinc/api-ruby.git.git
+  revision: 0e995965099d20262f2bcc11854a99e3e535f76f
+  branch: master
+  specs:
+    conjur-api (4.7.2)
+      activesupport
+      rest-client
+
+GIT
+  remote: git://github.com/conjurinc/cli-ruby.git.git
+  revision: 8df4323b1141d3e7f44207ee98da1bf2150af4ac
+  branch: master
+  specs:
+    conjur-cli (4.8.0)
+      activesupport
+      cas_rest_client
+      conjur-api (>= 4.7.2)
+      deep_merge
+      gli (>= 2.8.0)
+      highline
+      methadone
+      netrc
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (4.1.0)
+      i18n (~> 0.6, >= 0.6.9)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.1)
+      tzinfo (~> 1.1)
+    addressable (2.3.6)
+    cas_rest_client (1.3)
+      rest-client (>= 1.4.2)
+    coderay (1.1.0)
+    conjur-asset-environment-api (0.2.7)
+      conjur-api
+    conjur-asset-layer-api (0.7.0)
+      conjur-api
+      conjur-asset-environment-api
+    conjur-asset-ui-api (1.2.0)
+      conjur-api (~> 4.6)
+      launchy
+      puma
+      rack
+      rack-streaming-proxy (= 2.0.1)
+    deep_merge (1.0.1)
+    gli (2.10.0)
+    highline (1.6.21)
+    i18n (0.6.9)
+    json (1.8.1)
+    launchy (2.4.2)
+      addressable (~> 2.3)
+    methadone (1.3.2)
+      bundler
+    method_source (0.8.2)
+    mime-types (2.2)
+    minitest (5.3.3)
+    netrc (0.7.7)
+    pry (0.9.12.6)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    puma (2.8.2)
+      rack (>= 1.1, < 2.0)
+    rack (1.5.2)
+    rack-streaming-proxy (2.0.1)
+      rack (>= 1.4)
+      servolux (~> 0.10)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    servolux (0.10.0)
+    slop (3.5.0)
+    thread_safe (0.3.3)
+    tzinfo (1.1.0)
+      thread_safe (~> 0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  conjur-api!
+  conjur-asset-layer-api
+  conjur-asset-ui-api
+  conjur-cli!
+  pry
