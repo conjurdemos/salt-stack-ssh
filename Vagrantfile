@@ -22,6 +22,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :"client" do |client|
-    master.vm.hostname = "client"
+    client.vm.hostname = "client"
   end
 end
