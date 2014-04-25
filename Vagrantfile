@@ -15,17 +15,13 @@ Vagrant.configure("2") do |config|
     master.vm.hostname = "master"
     master.vm.provision :salt do |salt|
       salt.verbose = true
-      salt.minion_config = "salt/master"
-      salt.run_highstate = true
   
       salt.install_master = true
-      salt.master_config = "salt/master"    
-      salt.master_key = "salt/keys/master.pem"
-      salt.master_pub = "salt/keys/master.pub"
-      salt.minion_key = "salt/keys/master.pem"
-      salt.minion_pub = "salt/keys/master.pub"
-      salt.seed_master = {master: "salt/keys/master.pub"}
-      salt.run_overstate = true
+      salt.no_minion = true
     end
+  end
+
+  config.vm.define :"client" do |client|
+    master.vm.hostname = "client"
   end
 end
