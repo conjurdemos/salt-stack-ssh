@@ -1,10 +1,24 @@
+`mkdir -p ssh`
+
 policy "salt-host-factory-1.0.1.dev" do
   group "ops" do
-    add_member user("otto")
+    add_member otto = user("otto")
+    
+    unless File.exists?("ssh/otto_id_rsa.pub")
+      puts "Creating pubkey for #{otto.login}"
+      `ssh-keygen -q -N '' -f ssh/otto_id_rsa  -b 2048 -C "otto@salt-host-factory"`
+      api.add_public_key otto.login, File.read('ssh/otto_id_rsa.pub')
+    end
   end
   
   group "developers" do
-    add_member user("donna")
+    add_member donna = user("donna")
+
+    unless File.exists?("ssh/donna_id_rsa.pub")
+      puts "Creating pubkey for #{donna.login}"
+      `ssh-keygen -q -N '' -f ssh/donna_id_rsa  -b 2048 -C "donna@salt-host-factory"`
+      api.add_public_key donna.login, File.read('ssh/donna_id_rsa.pub')
+    end
   end
   
   layer "salt-masters" do

@@ -40,6 +40,8 @@ GEM
     conjur-asset-layer-api (0.7.0)
       conjur-api
       conjur-asset-environment-api
+    conjur-asset-pubkeys-api (0.1.2)
+      conjur-api
     conjur-asset-ui-api (1.2.0)
       conjur-api (~> 4.6)
       launchy
@@ -83,6 +85,7 @@ PLATFORMS
 DEPENDENCIES
   conjur-api!
   conjur-asset-layer-api
+  conjur-asset-pubkeys-api
   conjur-asset-ui-api
   conjur-cli!
   pry
