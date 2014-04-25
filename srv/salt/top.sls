@@ -1,0 +1,3 @@
+base:
+  '*':
+    - 'conjur-client'
