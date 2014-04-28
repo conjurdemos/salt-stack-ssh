@@ -1,3 +1,3 @@
 chef:
-  pgk:
+  pkg:
     - installed
