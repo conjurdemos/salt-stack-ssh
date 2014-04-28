@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
     master.vm.network "private_network", ip: "10.47.94.2"
     master.vm.network :forwarded_port, guest: 53, host: 53
     master.vm.hostname = "master"
+    master.vm.synced_folder "salt/roots/", "/srv/salt/"
     master.vm.provision :salt do |salt|
       salt.verbose = true
   
