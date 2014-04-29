@@ -13,7 +13,9 @@ Vagrant.configure("2") do |config|
     master.vm.network "private_network", ip: "10.47.94.2"
     master.vm.network :forwarded_port, guest: 53, host: 53
     master.vm.hostname = "master"
-    master.vm.synced_folder "salt/roots/", "/srv/salt/"
+    master.vm.synced_folder "srv/runners", "/srv/runners"
+    master.vm.synced_folder "srv/reactor", "/srv/reactor"
+
     master.vm.provision :salt do |salt|
       salt.verbose = true
   
@@ -24,5 +26,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :"client" do |client|
     client.vm.hostname = "client"
+
+    client.vm.provision :salt do |salt|
+        salt.verbose = true
+        
+    end
   end
 end
