@@ -1,27 +1,38 @@
-# You need saucy or later for Ubuntu in order to get an ssh server which has AuthorizedKeysCommand
-# https://github.com/mitchellh/vagrant/issues/1709
-BASE_BOX="http://cloud-images.ubuntu.com/vagrant"
-SAUCY64_URL="#{BASE_BOX}/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
+#begin
+#  require 'vagrant-vbguest'
+#rescue LoadError => e
+#  warn "Required plugin not found:\n#{e}"
+#end
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "saucy64"
-  config.vm.box_url = SAUCY64_URL
+  config.vm.box = "precise64"
 
   config.ssh.forward_agent = true
 
-  config.vm.define :"salt-master" do |master|
+  config.vm.define :"salt" do |master|
     master.vm.network "private_network", ip: "10.47.94.2"
-    master.vm.network :forwarded_port, guest: 53, host: 53
-    master.vm.hostname = "master"
+    master.vm.hostname = "salt"
+    
     master.vm.provision :salt do |salt|
       salt.verbose = true
   
-      salt.install_master = true
       salt.no_minion = true
+      salt.master_config = "salt/master"
+      salt.install_master = true
     end
   end
 
   config.vm.define :"client" do |client|
+    client.vm.network "private_network", ip: "10.47.94.3"
     client.vm.hostname = "client"
+
+    client.vm.provision :file, source: "files/client/hosts", destination: "/tmp/hosts"
+    client.vm.provision :shell, inline: "sudo mv /tmp/hosts /etc/hosts"
+
+    client.vm.provision :salt do |salt|
+      salt.verbose = true
+  
+      salt.run_highstate = true
+    end
   end
 end
