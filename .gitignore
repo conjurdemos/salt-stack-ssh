@@ -1,3 +1,4 @@
 ssh
 .vagrant
 policy.json
+.idea
