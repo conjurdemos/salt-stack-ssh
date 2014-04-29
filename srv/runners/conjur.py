@@ -1,5 +1,6 @@
 import os
-
+import yaml
+import salt.config
 import conjur
 
 _client_layer_id = "salt-host-factory-1.0.1.dev/clients"
@@ -13,8 +14,6 @@ def register(host_id, minion_id):
     _provision_host(host_id)
     _setup_conjur_ssh(host_id, minion_id)
 
-
-
 def deregister(host_id):
     """
     Deregister a host from Conjur by removing it from the clients layer.
@@ -22,19 +21,15 @@ def deregister(host_id):
     api = _conjur_api()
     api.layer(_client_layer_id).remove_host(host_id)
 
-
 def _conjur_api():
-    appliance_url = os.environ['CONJUR_APPLIANCE_URL']
-    account = os.environ.get('CONJUR_ACCOUNT', 'conjur')
-    conjur.configure(account=account, appliance_url=appliance_url)
+    conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
+    conjur.configure(account=conjur_conf['account'], appliance_url=conjur_conf['appliance_url'], verify_ssl=False)
     return conjur.new_from_netrc()
-
 
 def _provision_host(host_id):
     api = _conjur_api()
     host = api.create_host(host_id)
     api.layer(_client_layer_id).add_host(host)
-
 
 def _setup_conjur_ssh(host_id, minion_id):
     pass

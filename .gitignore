@@ -1,3 +1,6 @@
+.conjurrc
+*.pem
+*.pyc
 ssh
 .vagrant
 policy.json
