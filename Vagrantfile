@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :"salt" do |master|
     master.vm.network "private_network", ip: "10.47.94.2"
     master.vm.hostname = "salt"
-    
+
     master.vm.provision :salt do |salt|
       salt.verbose = true
   
@@ -20,6 +20,8 @@ Vagrant.configure("2") do |config|
       salt.master_config = "salt/master"
       salt.install_master = true
     end
+
+    master.vm.provision :shell, inline: "sudo mv /tmp/master /etc/salt/master && restart salt-master"
   end
 
   config.vm.define :"client" do |client|
