@@ -34,5 +34,7 @@ Vagrant.configure("2") do |config|
       salt.verbose = true
       salt.run_highstate = true
     end
+    
+    client.vm.provision :shell, inline: "sudo salt-call event.fire_master ["client","client"] conjur.register"
   end
 end
