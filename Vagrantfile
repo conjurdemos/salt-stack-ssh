@@ -1,6 +1,12 @@
 BASE_BOX="http://cloud-images.ubuntu.com/vagrant"
 PRECISE64_URL="#{BASE_BOX}/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
 
+begin
+  require 'vagrant-vbguest'
+rescue LoadError => ex
+  puts "Missing vagrant-vbguest plugin, you might want to install it"
+end
+
 Vagrant.configure("2") do |config|
   config.vm.box = "precise64"
   config.vm.box_url = PRECISE64_URL
@@ -35,6 +41,6 @@ Vagrant.configure("2") do |config|
       salt.run_highstate = true
     end
     
-    client.vm.provision :shell, inline: "sudo salt-call event.fire_master ["client","client"] conjur.register"
+    client.vm.provision :shell, inline: 'sudo salt-call event.fire_master ["client","client"] conjur.register'
   end
 end
