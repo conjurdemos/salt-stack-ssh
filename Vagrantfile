@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 require 'pathname'
 require 'yaml'
-=======
->>>>>>> ae2748050551dc5a6217076104ff96d2579e5f3d
 conjurrc = ENV['CONJURRC'] || '.conjurrc'
 appliance_url = YAML.load(File.read(conjurrc))['appliance_url']
 conjur_pem = YAML.load(File.read(conjurrc))['cert_file']
@@ -75,7 +73,7 @@ Vagrant.configure("2") do |config|
       salt.minion_config = "salt/minion"
       salt.run_highstate = true
     end
-    
+
     
 #    client.vm.provision :shell, inline: "sudo salt-call event.fire_master [\"client\",\"client\"] conjur-register.register"
   end
