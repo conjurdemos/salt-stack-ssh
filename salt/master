@@ -1,1 +1,3 @@
-#TODO
+reactor:
+  - 'conjur/host/register':
+    - /srv/reactor/conjur-ssh.sls
