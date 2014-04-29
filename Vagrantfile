@@ -1,18 +1,24 @@
 conjurrc = ENV['CONJURRC'] || '.conjurrc'
 appliance_url = YAML.load(File.read(conjurrc))['appliance_url']
 conjur_pem = YAML.load(File.read(conjurrc))['cert_file']
-api_keys = JSON.parse(File.read('policy.json'))['api_keys']
+policy = JSON.parse(File.read('policy.json'))
+api_keys = policy['api_keys']
 salt_host_id = api_keys.keys.select{|k| k.split(':')[1] == 'host'}[0]
+layer_id = [ policy['policy'], 'clients' ].join('/')
 
 host_id = salt_host_id.split(':')[-1]
 host_login = [ 'host', host_id ].join('/')
 host_api_key = api_keys[salt_host_id]
 
-File.write('./salt_netrc', <<NETRC)
+File.write('salt_netrc', <<NETRC)
 machine #{appliance_url}/authn
   login #{host_login}
   password #{host_api_key}
 NETRC
+
+File.write('salt/master.d/conjur.conf', <<CONJUR)
+conjur_layer_default: #{layer_id}
+CONJUR
 
 BASE_BOX="http://cloud-images.ubuntu.com/vagrant"
 PRECISE64_URL="#{BASE_BOX}/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
@@ -26,6 +32,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :"salt" do |master|
     master.vm.network "private_network", ip: "10.47.94.2"
     master.vm.hostname = "salt"
+    master.vm.synced_folder "salt/master.d", "/etc/salt/master.d"
     master.vm.synced_folder "srv/runners", "/srv/runners"
     master.vm.synced_folder "srv/reactor", "/srv/reactor"
     master.vm.synced_folder "srv/salt", "/srv/salt"

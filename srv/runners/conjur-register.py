@@ -3,21 +3,21 @@ import yaml
 import salt.config
 import conjur
 
-def register(layer_id, host_id, minion_id):
+def register(host_id, minion_id):
     """
     Create and register a host identity with Conjur by adding it to the clients layer.
 
     host_id *must* be fully qualified
     """
-    _provision_host(host_id, layer_id)
-    _setup_conjur_ssh(host_id, minion_id)
+    host = _provision_host(host_id, _client_layer_id())
+    return { host.id, host.api_key }
 
 def deregister(host_id):
     """
     Deregister a host from Conjur by removing it from the clients layer.
     """
     api = _conjur_api()
-    api.layer(_client_layer_id).remove_host(host_id)
+    api.layer(_client_layer_id()).remove_host(host_id)
 
 def _conjur_api():
     conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
@@ -30,6 +30,7 @@ def _provision_host(host_id, layer_id):
     if not host.exists():
         host = api.create_host(host_id)
     api.layer(layer_id).add_host(host)
+    return host
 
-def _setup_conjur_ssh(host_id, minion_id):
-    pass
+def _client_layer_id():
+    return salt.config.master_config('/etc/salt/master')['conjur_layer_default']
