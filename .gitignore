@@ -1,3 +1,4 @@
+salt_netrc
 .conjurrc
 *.pem
 *.pyc

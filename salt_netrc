@@ -1,3 +1,0 @@
-machine https://ec2-204-236-192-235.compute-1.amazonaws.com/api/authn
-  login host/kgilpin@wm164-1b7.local/salt-host-factory-1.1.0.dev/salt-master/1
-  password 17xa91710gt6me2zs3q94s92j1v2y55mtg11g0qgt1pbbmz4pyfavx
