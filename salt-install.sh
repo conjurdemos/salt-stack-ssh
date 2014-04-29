@@ -1,7 +1,7 @@
 #!/bin/bash -e
-mv /tmp/policy.json /var/
 mv /tmp/conjur.conf /etc/
-sudo mv /tmp/conjur*.pem /etc/
+mv /tmp/conjur*.pem /etc/
+mv /tmp/salt_netrc /root/.netrc
 
 apt-get install -y git python-setuptools
 
