@@ -1,6 +1,6 @@
 `mkdir -p ssh`
 
-policy "salt-host-factory-1.0.2.dev" do
+policy "salt-host-factory-1.1.0.dev" do
   group "ops" do
     add_member otto = user("otto")
     
@@ -23,7 +23,12 @@ policy "salt-host-factory-1.0.2.dev" do
   
   layer "salt-masters" do
     add_host host("salt-master/1")
+    
+    owns do
+      layer "clients" do
+        add_member "admin_host", group("ops")
+        add_member "use_host", group("developers")
+      end
+    end
   end
-
-  layer "clients"
 end
