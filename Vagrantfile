@@ -22,9 +22,7 @@ Vagrant.configure("2") do |config|
     master.vm.provision :file, source: conjurrc, destination: "/tmp/conjur.conf"
     master.vm.provision :file, source: conjur_pem, destination: "/tmp/#{Pathname.new(conjur_pem).basename.to_s}"
 
-    master.vm.provision :shell, inline: "sudo mv /tmp/policy.json /var/"
-    master.vm.provision :shell, inline: "sudo mv /tmp/conjur.conf /etc/"
-    master.vm.provision :shell, inline: "sudo mv /tmp/#{Pathname.new(conjur_pem).basename.to_s} /etc/"
+    master.vm.provision :shell, path: "salt-install.sh"
 
     master.vm.provision :salt do |salt|
       salt.verbose = true
