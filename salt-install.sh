@@ -17,3 +17,5 @@ else
 fi
 
 python setup.py install
+
+mkdir -p /var/hosts
