@@ -1,4 +1,4 @@
-srv/salt/**/trusted-image-v1.1.0.tar.gz
+srv/salt/conjur/trusted-image-v1.1.0.tar.gz
 salt/master.d/conjur.conf
 salt_netrc
 .conjurrc

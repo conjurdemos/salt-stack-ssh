@@ -15,6 +15,7 @@ def register(minion):
     """
     host_id = string.join([_host_prefix(), minion], '/')
     fname = '%s.json'% re.sub("/", "_", host_id)
+    conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
 
     host = _provision_host(host_id, _client_layer_id())
     api_key = None
@@ -25,7 +26,6 @@ def register(minion):
         
     host_json = None
     if api_key:
-        conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
         ssl_certificate = open(string.join(['/etc/', conjur_conf['cert_file']], ''), 'r').read()
         host_json = json.dumps({
           "conjur": {
@@ -41,7 +41,9 @@ def register(minion):
         host_json = open('/var/hosts/%s' % fname, 'r').read()
 
     local = salt.client.LocalClient()
+    local.cmd([minion], 'cp.recv', [{'/etc/conjur.conf': yaml.dump(conjur_conf)}, '/etc/conjur.conf'], expr_form='list')
     local.cmd([minion], 'cp.recv', [{minion: host_json}, '/etc/chef/solo.json'], expr_form='list')
+    local.cmd([minion], 'state.highstate', expr_form='list')
 
 def deregister(host_id):
     """
