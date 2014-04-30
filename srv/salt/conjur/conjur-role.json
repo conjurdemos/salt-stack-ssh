@@ -1,0 +1,12 @@
+{
+  "name": "conjur",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[apt]", 
+    "recipe[conjur-client::ssl_certificate]"
+    "recipe[terminal-login::install]", 
+    "recipe[terminal-login::sudoers]", 
+    "recipe[terminal-login::configure]", 
+  ]
+}

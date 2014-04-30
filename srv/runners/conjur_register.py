@@ -7,13 +7,13 @@ import salt.config
 import salt.client
 import conjur
 
-def register(host_id):
+def register(minion):
     """
     Create and register a host identity with Conjur by adding it to the clients layer.
 
     host_id *must* be fully qualified
     """
-    host_id = string.join([_host_prefix(), host_id], '/')
+    host_id = string.join([_host_prefix(), minion], '/')
     fname = '%s.json'% re.sub("/", "_", host_id)
 
     host = _provision_host(host_id, _client_layer_id())
@@ -23,6 +23,7 @@ def register(host_id):
     except: AttributeError
         # pass
         
+    host_json = None
     if api_key:
         conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
         ssl_certificate = open(string.join(['/etc/', conjur_conf['cert_file']], ''), 'r').read()
@@ -36,9 +37,11 @@ def register(host_id):
           }
         }, indent=2)
         file('/var/hosts/%s' % fname, 'w').write(host_json)
+    else:
+        host_json = open('/var/hosts/%s' % fname, 'r').read()
 
     local = salt.client.LocalClient()
-    local.cmd(host_id, 'cp.get_file', '/var/hosts/%s' % fname, '/etc/chef/solo.json')
+    local.cmd([minion], 'cp.recv', [{minion: host_json}, '/etc/chef/solo.json'], expr_form='list')
 
 def deregister(host_id):
     """
