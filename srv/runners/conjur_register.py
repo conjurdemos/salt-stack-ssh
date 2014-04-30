@@ -28,7 +28,9 @@ def _conjur_api():
 
 def _provision_host(host_id, layer_id):
     api = _conjur_api()
-    host = api.create_host(host_id)
+    host = api.host(host_id)
+    if not host.exists():
+        host = api.create_host(host_id)
     api.layer(layer_id).add_host(host)
     return host
 
