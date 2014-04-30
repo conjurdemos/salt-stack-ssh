@@ -1,3 +1,2 @@
-chef:
-  pkg:
-    - installed
+echo hi:
+  cmd.run

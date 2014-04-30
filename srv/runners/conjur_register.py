@@ -3,7 +3,7 @@ import yaml
 import salt.config
 import conjur
 
-def register(host_id, minion_id):
+def register(host_id, payload):
     """
     Create and register a host identity with Conjur by adding it to the clients layer.
 
