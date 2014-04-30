@@ -4,3 +4,9 @@
     - user: root
     - group: root
     - mode: 0644
+
+/etc/chef/solo.rb:
+  file.managed:
+    - source: salt://conjur/chef-solo.rb
+    - user: root
+    - group: root
