@@ -28,10 +28,10 @@ conjur-ssh-cookbooks:
   archive:
     - extracted
     - name: /var/chef
-    - source: salt://conjur/trusted-image-v1.1.0.tar.gz
+    - source: salt://conjur/trusted-image.tar.gz
     - archive_format: tar
     - tar_options: z
     - if_missing: /var/chef/cookbooks
 
-chef-solo -j /etc/chef/solo.json -o role[conjur]:
+chef-solo -o role[conjur]:
   cmd.run
