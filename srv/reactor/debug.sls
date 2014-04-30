@@ -1,3 +1,3 @@
 print_debug:
   runner.debug.echo:
-    - {{ data }}
+    - payload: {{ data }}

@@ -1,2 +1,2 @@
-def echo(data):
-    print data
+def echo(payload):
+    print payload
