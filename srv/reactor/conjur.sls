@@ -1,3 +1,3 @@
-'conjur/register':
+conjur_register:
   runner.conjur_register.register:
     - host_id: {{ data['id'] }}

@@ -1,5 +1,6 @@
 require 'pathname'
 require 'yaml'
+
 # Load the .conjurrc and policy.json and parse the settings out of it so they can be propagated to the Salt master.
 # The Conjur config is sent to the Salt master via /etc/conjur.conf
 # The host identity is sent to the Salt master via /root/.netrc
@@ -63,6 +64,7 @@ Vagrant.configure("2") do |config|
     master.vm.synced_folder "srv/reactor", "/srv/reactor"
     master.vm.synced_folder "srv/salt", "/srv/salt"
 
+    master.vm.provision :file, source: "eventlisten.py", destination: "/tmp/eventlisten.py"
     master.vm.provision :file, source: "salt_netrc", destination: "/tmp/salt_netrc"
     master.vm.provision :file, source: conjurrc, destination: "/tmp/conjur.conf"
     master.vm.provision :file, source: conjur_pem, destination: "/tmp/#{Pathname.new(conjur_pem).basename.to_s}" if conjur_pem
@@ -85,6 +87,7 @@ Vagrant.configure("2") do |config|
     client.vm.provision :file, source: "files/client/hosts", destination: "/tmp/hosts"
     client.vm.provision :shell, inline: "sudo mv /tmp/hosts /etc/hosts"
     client.vm.provision :salt
-    client.vm.provision :shell, inline: "sudo salt-call event.fire_master '{}' 'conjur/register'"
+    client.vm.provision :shell, inline: "sudo restart salt-minion"
+    client.vm.provision :shell, inline: "sudo salt-call event.fire_master 'no-arg' 'conjur/register'"
   end
 end
