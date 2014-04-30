@@ -16,26 +16,29 @@ def register(host_id):
     host_id = string.join([_host_prefix(), host_id], '/')
     fname = '%s.json'% re.sub("/", "_", host_id)
 
+    host = _provision_host(host_id, _client_layer_id())
+    api_key = None
     try:
-        host = _provision_host(host_id, _client_layer_id())
+        api_key = host.api_key
+    except: AttributeError
+        # pass
+        
+    if api_key:
         conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
         ssl_certificate = open(string.join(['/etc/', conjur_conf['cert_file']], ''), 'r').read()
         host_json = json.dumps({
           "conjur": {
             "host_identity": {
               "id": host.id,
-              "api_key": host.api_key
+              "api_key": api_key
             },
             "ssl_certificate": re.sub("\n", "\\n", ssl_certificate)
           }
         }, indent=2)
         file('/var/hosts/%s' % fname, 'w').write(host_json)
-    except conjur.ConjurException as e:
-        if not re.search(" 409$", e.args[0]):
-            raise
-    
+
     local = salt.client.LocalClient()
-    local.cmd(host_id, 'cp.get_file', 'salt://var/hosts/%s' % fname, '/etc/chef/solo.json')
+    local.cmd(host_id, 'cp.get_file', '/var/hosts/%s' % fname, '/etc/chef/solo.json')
 
 def deregister(host_id):
     """
