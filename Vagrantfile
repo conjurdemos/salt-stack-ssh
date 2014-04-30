@@ -87,7 +87,5 @@ Vagrant.configure("2") do |config|
     client.vm.provision :file, source: "files/client/hosts", destination: "/tmp/hosts"
     client.vm.provision :shell, inline: "sudo mv /tmp/hosts /etc/hosts"
     client.vm.provision :salt
-    client.vm.provision :shell, inline: "sudo restart salt-minion"
-    client.vm.provision :shell, inline: "sudo salt-call event.fire_master 'no-arg' 'conjur/register'"
   end
 end

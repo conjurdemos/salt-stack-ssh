@@ -34,6 +34,33 @@ Start Vagrant
 vagrant up
 ```
 
+Register and configure the minion. You'll run three terminals: one to tail the master, one to tail the client,
+and one to run commands.
+
+## Terminal 1
+
+Tail the master:
+
+```bash
+vagrant ssh salt -c "sudo tail -f /var/log/salt/master"
+```
+
+## Terminal 2
+
+Tail the minion:
+
+```bash
+vagrant ssh client -c "sudo tail -f /var/log/salt/minion"
+```
+
+## Terminal 3
+
+Register the client VM:
+
+```bash
+vagrant ssh client -c "sudo salt-call event.fire_master 'no-arg' 'conjur/register'"
+```
+
 Login
 
 ```
