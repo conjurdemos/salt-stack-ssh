@@ -1,3 +1,4 @@
+salt/master.d/conjur.conf
 salt_netrc
 .conjurrc
 *.pem
