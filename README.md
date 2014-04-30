@@ -14,6 +14,12 @@ Once this configuration is complete:
 Usage
 -----
 
+Initialize and configure the Conjur service.
+
+```bash
+conjur init -f .conjurrc
+```
+
 Generate the permissions model. The context is saved to policy.json, which used by the web service and by the 
 cucumber client testing code.
 
