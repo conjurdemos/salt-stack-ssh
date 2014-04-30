@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-
 require 'pathname'
 require 'yaml'
-=======
 # Load the .conjurrc and policy.json and parse the settings out of it so they can be propagated to the Salt master.
 # The Conjur config is sent to the Salt master via /etc/conjur.conf
 # The host identity is sent to the Salt master via /root/.netrc
 
->>>>>>> f9ca9b24b5debd33b8c7225d8fa0778e748b2e79
 conjurrc = ENV['CONJURRC'] || '.conjurrc'
 appliance_url = YAML.load(File.read(conjurrc))['appliance_url']
 conjur_pem = YAML.load(File.read(conjurrc))['cert_file']
@@ -89,6 +85,6 @@ Vagrant.configure("2") do |config|
     client.vm.provision :file, source: "files/client/hosts", destination: "/tmp/hosts"
     client.vm.provision :shell, inline: "sudo mv /tmp/hosts /etc/hosts"
     client.vm.provision :salt
-    client.vm.provision :shell, inline: "sudo salt-call event.fire_master '{}' 'conjur/register'" 
+    client.vm.provision :shell, inline: "sudo salt-call event.fire_master '{}' 'conjur/register'"
   end
 end
