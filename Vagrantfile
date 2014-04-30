@@ -30,7 +30,7 @@ conjur_host_prefix: #{policy_id}
 CONJUR
 
 BASE_BOX="http://cloud-images.ubuntu.com/vagrant"
-PRECISE64_URL="#{BASE_BOX}/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
+SAUCY64_URL="#{BASE_BOX}/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
 
 begin
   require 'vagrant-vbguest'
@@ -39,8 +39,8 @@ rescue LoadError => ex
 end
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "precise64"
-  config.vm.box_url = PRECISE64_URL
+  config.vm.box = "saucy64"
+  config.vm.box_url = SAUCY64_URL
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
