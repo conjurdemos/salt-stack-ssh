@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/conjurinc/api-ruby.git.git
+  remote: git://github.com/conjurinc/api-ruby.git
   revision: 0e995965099d20262f2bcc11854a99e3e535f76f
   branch: master
   specs:
@@ -8,8 +8,8 @@ GIT
       rest-client
 
 GIT
-  remote: git://github.com/conjurinc/cli-ruby.git.git
-  revision: 8df4323b1141d3e7f44207ee98da1bf2150af4ac
+  remote: git://github.com/conjurinc/cli-ruby.git
+  revision: 6474fc1dd4d1ef515afd9f097ef8759e68800e6b
   branch: master
   specs:
     conjur-cli (4.8.0)

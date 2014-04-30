@@ -3,6 +3,7 @@ mv /tmp/conjur.conf /etc/
 mv /tmp/conjur*.pem /etc/
 mv /tmp/salt_netrc /root/.netrc
 
+apt-get update
 apt-get install -y git python-setuptools
 
 cd /opt

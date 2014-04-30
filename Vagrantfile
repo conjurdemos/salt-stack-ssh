@@ -36,6 +36,10 @@ Vagrant.configure("2") do |config|
   config.vm.box = "precise64"
   config.vm.box_url = PRECISE64_URL
 
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
   config.ssh.forward_agent = true
 
   config.vm.define :"salt" do |master|
