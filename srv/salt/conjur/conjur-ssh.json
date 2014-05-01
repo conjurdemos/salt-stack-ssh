@@ -1,0 +1,13 @@
+{
+  "name": "conjur-ssh",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "default": {
+    "conjur-ssh": {
+      "install_client": false
+    }
+  },
+  "run_list": [
+    "recipe[conjur-ssh]"
+  ]
+}

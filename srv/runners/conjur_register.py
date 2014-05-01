@@ -15,7 +15,6 @@ def register(minion):
     """
     host_id = string.join([_host_prefix(), minion], '/')
     fname = '%s.json'% re.sub("/", "_", host_id)
-    conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
 
     host = _provision_host(host_id, _client_layer_id())
     api_key = None
@@ -26,24 +25,28 @@ def register(minion):
         
     host_json = None
     if api_key:
-        ssl_certificate = open(string.join(['/etc/', conjur_conf['cert_file']], ''), 'r').read()
         host_json = json.dumps({
           "conjur": {
             "host_identity": {
               "id": host.id,
               "api_key": api_key
-            },
-            "ssl_certificate": re.sub("\n", "\\n", ssl_certificate)
+            }
           }
         }, indent=2)
         file('/var/hosts/%s' % fname, 'w').write(host_json)
     else:
         host_json = open('/var/hosts/%s' % fname, 'r').read()
 
+    conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
+    conjur_pem_path = conjur_conf['cert_file']
+    ssl_certificate = open(os.path.join('/etc/', conjur_pem_path), 'r').read()
+    conjur_conf['cert_file'] = '/etc/conjur.pem'
+
     local = salt.client.LocalClient()
     local.cmd([minion], 'cp.recv', [{'/etc/conjur.conf': yaml.dump(conjur_conf)}, '/etc/conjur.conf'], expr_form='list')
-    local.cmd([minion], 'cp.recv', [{minion: host_json}, '/etc/chef/solo.json'], expr_form='list')
-    local.cmd([minion], 'state.highstate', expr_form='list')
+    local.cmd([minion], 'cp.recv', [{'/etc/conjur.pem': ssl_certificate}, '/etc/conjur.pem'], expr_form='list')
+    local.cmd([minion], 'cp.recv', [{minion: host_json}, '/etc/chef/conjur-ssh.json'], expr_form='list')
+    local.cmd([minion], 'state.sls', ['conjur-ssh'], expr_form='list')
 
 def deregister(host_id):
     """
