@@ -1,9 +1,9 @@
-/var/chef/roles/conjur.json:
+/var/chef/roles/conjur-ssh.json:
   file.managed:
-    - source: salt://conjur/conjur-role.json
+    - source: salt://conjur/conjur-ssh.json
     - user: root
     - group: root
-    - mode: 0644
+    - mode: 0600
 
 /etc/chef/solo.rb:
   file.managed:
@@ -11,27 +11,21 @@
     - user: root
     - group: root
 
-/opt/conjur/embedded/ssl/certs:
+/var/chef/conjur-ssh:
   file.directory:
     - user: root
     - group: root
     - mode: 0755
     - makedirs: True
 
-/var/chef:
-  file.directory:
-    - user: root
-    - group: root
-    - mode: 0755
-
 conjur-ssh-cookbooks:
   archive:
     - extracted
-    - name: /var/chef
-    - source: salt://conjur/trusted-image.tar.gz
+    - name: /var/chef/conjur-ssh
+    - source: salt://conjur/conjur-ssh-v1.0.0.tar.gz
     - archive_format: tar
     - tar_options: z
-    - if_missing: /var/chef/cookbooks
+    - if_missing: /var/chef/conjur-ssh/cookbooks
 
-chef-solo -o role[conjur]:
+chef-solo -o role[conjur-ssh]:
   cmd.run

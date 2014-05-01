@@ -1,5 +1,5 @@
 .DS_Store
-srv/salt/conjur/trusted-image.tar.gz
+srv/salt/conjur/*.tar.gz
 salt/master.d/conjur.conf
 salt_netrc
 .conjurrc
