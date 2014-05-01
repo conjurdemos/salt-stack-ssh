@@ -61,10 +61,13 @@ Register the client VM:
 vagrant ssh client -c "sudo salt-call event.fire_master 'no-arg' 'conjur/register'"
 ```
 
-Login
+## Login
 
 ```
-ssh -i ./ssh/otto_id_rsa "otto@salt-host-factory-1.0"@client -c "id ; sudo ls /etc"
+otto=`ruby -r json -e "puts JSON.load(File.read('policy.json'))['api_keys'].keys.select{|k| k.split(':')[-1] =~ /otto/}"`
+ssh -i ./ssh/otto_id_rsa $otto@127.0.0.1 -p 2200
 
-ssh -i ./ssh/donna_id_rsa "donna@salt-host-factory-1.0"@client -c "id ; ls /etc"
+donna=`ruby -r json -e "puts JSON.load(File.read('policy.json'))['api_keys'].keys.select{|k| k.split(':')[-1] =~ /donna/}"`
+ssh -i ./ssh/donna_id_rsa $donna@127.0.0.1 -p 2200
 ```
+
