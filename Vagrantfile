@@ -26,7 +26,7 @@ NETRC
 
 File.write('salt/master.d/conjur.conf', <<CONJUR)
 conjur_layer_default: #{layer_id}
-conjur_host_prefix: #{policy_id}
+conjur_host_prefix: #{policy_id}/v#{ENV['ITERATION'] || 0}
 CONJUR
 
 BASE_BOX="http://cloud-images.ubuntu.com/vagrant"
@@ -72,8 +72,6 @@ Vagrant.configure("2") do |config|
     master.vm.provision :shell, path: "salt-install.sh"
 
     master.vm.provision :salt do |salt|
-      salt.verbose = true
-  
       salt.no_minion = true
       salt.master_config = "salt/master"
       salt.install_master = true
@@ -86,6 +84,8 @@ Vagrant.configure("2") do |config|
 
     client.vm.provision :file, source: "files/client/hosts", destination: "/tmp/hosts"
     client.vm.provision :shell, inline: "sudo mv /tmp/hosts /etc/hosts"
-    client.vm.provision :salt
+    client.vm.provision :salt do |salt|
+      salt.minion_config = "salt/minion"
+    end
   end
 end
