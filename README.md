@@ -64,10 +64,10 @@ vagrant ssh client -c "sudo salt-call event.fire_master 'no-arg' 'conjur/registe
 ## Login
 
 ```
-otto=`ruby -r json -e "puts JSON.load(File.read('policy.json'))['api_keys'].keys.select{|k| k.split(':')[-1] =~ /otto/}"`
+otto=`ruby -r json -e "puts JSON.load(File.read('policy.json'))['api_keys'].keys.find{|k| k.split(':')[-1] =~ /otto/}.split(':')[-1]"`
 ssh -i ./ssh/otto_id_rsa $otto@127.0.0.1 -p 2200
 
-donna=`ruby -r json -e "puts JSON.load(File.read('policy.json'))['api_keys'].keys.select{|k| k.split(':')[-1] =~ /donna/}"`
+donna=`ruby -r json -e "puts JSON.load(File.read('policy.json'))['api_keys'].keys.find{|k| k.split(':')[-1] =~ /donna/}.split(':')[-1]"`
 ssh -i ./ssh/donna_id_rsa $donna@127.0.0.1 -p 2200
 ```
 
