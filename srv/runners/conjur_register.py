@@ -42,6 +42,8 @@ def register(minion):
     conjur_pem_path = conjur_conf['cert_file']
     ssl_certificate = open(os.path.join('/etc/', conjur_pem_path), 'r').read()
     conjur_conf['cert_file'] = '/etc/conjur.pem'
+    if _appliance_url():
+        conjur_conf['appliance_url'] = _appliance_url()
 
     local = salt.client.LocalClient()
     local.cmd([minion], 'cp.recv', [{'/etc/conjur.conf': yaml.dump(conjur_conf)}, '/etc/conjur.conf'], expr_form='list')
@@ -72,6 +74,12 @@ def _provision_host(host_id, layer_id):
 
 def _host_prefix():
     return salt.config.master_config('/etc/salt/master')['conjur_host_prefix']
+
+def _appliance_url():
+    try:
+        return salt.config.master_config('/etc/salt/master')['conjur_appliance_url']
+    except KeyError:
+        return None
 
 def _client_layer_id():
     return salt.config.master_config('/etc/salt/master')['conjur_layer_default']
