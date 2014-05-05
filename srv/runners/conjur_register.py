@@ -20,7 +20,8 @@ def register(minion):
     api_key = None
     try:
         api_key = host.api_key
-    except: AttributeError
+    except AttributeError:
+        None
         # pass
         
     host_json = None
