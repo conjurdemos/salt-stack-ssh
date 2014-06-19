@@ -21,3 +21,4 @@ fi
 python setup.py install
 
 mkdir -p /var/hosts
+curl -L -o /srv/salt/conjur/conjur-ssh-v1.1.0.tar.gz https://github.com/conjur-cookbooks/conjur-ssh/releases/download/v1.1.0/conjur-ssh-v1.1.0.tar.gz
