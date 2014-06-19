@@ -62,7 +62,7 @@ def deregister(host_id):
 def _conjur_api():
     conjur_conf = yaml.load(file('/etc/conjur.conf', 'r'))
     conjur.configure(account=conjur_conf['account'], appliance_url=conjur_conf['appliance_url'], verify_ssl=False)
-    return conjur.new_from_netrc()
+    return conjur.new_from_netrc('/root/.netrc')
 
 def _provision_host(host_id, layer_id):
     api = _conjur_api()
