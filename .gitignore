@@ -1,3 +1,5 @@
+aws.box
+box
 .DS_Store
 srv/salt/conjur/*.tar.gz
 salt/master.d/conjur.conf
