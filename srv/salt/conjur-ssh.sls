@@ -34,7 +34,7 @@ conjur-ssh-cookbooks:
   archive:
     - extracted
     - name: /var/chef/conjur-ssh
-    - source: salt://conjur/conjur-ssh-v1.1.0.tar.gz
+    - source: salt://conjur/conjur-ssh-v1.2.5.tar.gz
     - archive_format: tar
     - tar_options: z
     - if_missing: /var/chef/conjur-ssh/cookbooks
